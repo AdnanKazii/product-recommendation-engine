@@ -1,0 +1,17 @@
+# Data & modeling
+pandas
+numpy
+scikit-learn
+scipy
+matplotlib
+jupyter
+
+# API & serving
+fastapi
+uvicorn[standard]
+jinja2
+python-multipart
+
+# Testing
+pytest
+httpx
