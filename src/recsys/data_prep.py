@@ -58,3 +58,29 @@ def temporal_train_test_split(
     train = order_items[order_items["order_purchase_timestamp"] < cutoff_time]
     test = order_items[order_items["order_purchase_timestamp"] >= cutoff_time]
     return train.reset_index(drop=True), test.reset_index(drop=True)
+
+
+def build_product_features(
+    tables: dict[str, pd.DataFrame], order_items_train: pd.DataFrame
+) -> pd.DataFrame:
+    """One row per product: category, average price, average review score.
+
+    Built only from order_items_train so that content features never see
+    orders from the test period - the same leakage discipline as the
+    temporal split itself.
+    """
+    reviews = tables["order_reviews"][["order_id", "review_score"]]
+    item_reviews = order_items_train[["order_id", "product_id"]].merge(
+        reviews, on="order_id", how="left"
+    )
+    avg_review = item_reviews.groupby("product_id")["review_score"].mean()
+
+    features = order_items_train.groupby("product_id").agg(
+        category=("product_category_name_english", "first"), price=("price", "mean")
+    )
+    features["category"] = features["category"].fillna("unknown")
+    features["avg_review_score"] = avg_review
+    features["avg_review_score"] = features["avg_review_score"].fillna(
+        features["avg_review_score"].mean()
+    )
+    return features
