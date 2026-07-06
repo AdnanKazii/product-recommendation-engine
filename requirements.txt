@@ -12,6 +12,7 @@ uvicorn[standard]
 jinja2
 python-multipart
 
-# Testing
+# Testing & linting
 pytest
 httpx
+ruff
