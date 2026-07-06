@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Product Recommendation Engine</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header>
+    <h1>Product Recommendation Engine</h1>
+    <p>Hybrid recommender trained on real e-commerce order data. Click a product to see live recommendations from the model.</p>
+  </header>
+
+  <main>
+    <section id="catalog">
+      <h2>Browse products</h2>
+      <div id="product-grid" class="grid"></div>
+    </section>
+
+    <section id="results" class="hidden">
+      <h2>Recommended alongside <span id="query-label"></span></h2>
+      <div id="rec-grid" class="grid"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Recommendations blend item-item co-purchase patterns (collaborative filtering) with category/price/review similarity (content-based), falling back to the latter when co-purchase data is sparse.</p>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

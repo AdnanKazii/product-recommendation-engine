@@ -35,6 +35,13 @@ def test_health(client):
     assert response.json() == {"status": "ok"}
 
 
+def test_index_page_renders(client):
+    response = client.get("/")
+    assert response.status_code == 200
+    assert "text/html" in response.headers["content-type"]
+    assert "Product Recommendation Engine" in response.text
+
+
 def test_list_products_sorted_by_popularity(client):
     response = client.get("/products?limit=2")
     assert response.status_code == 200

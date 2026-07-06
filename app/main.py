@@ -1,9 +1,15 @@
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import Depends, FastAPI, HTTPException, Request
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
 from app.schemas import ProductOut, RecommendationResponse
 from app.service import RecommenderService, build_recommender_service
+
+APP_DIR = Path(__file__).parent
 
 
 @asynccontextmanager
@@ -13,10 +19,17 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="Product Recommendation Engine", lifespan=lifespan)
+app.mount("/static", StaticFiles(directory=APP_DIR / "static"), name="static")
+templates = Jinja2Templates(directory=APP_DIR / "templates")
 
 
 def get_service(request: Request) -> RecommenderService:
     return request.app.state.service
+
+
+@app.get("/", response_class=HTMLResponse)
+def index(request: Request):
+    return templates.TemplateResponse(request, "index.html")
 
 
 @app.get("/health")
