@@ -1,0 +1,12 @@
+# Slim dependency set for the deployed Docker image: everything needed to
+# serve the API, minus dev-only tooling (jupyter, matplotlib, pytest, ruff)
+# that would otherwise bloat the image for no runtime benefit.
+pandas
+numpy
+scikit-learn
+scipy
+fastapi
+uvicorn[standard]
+jinja2
+python-multipart
+kaggle

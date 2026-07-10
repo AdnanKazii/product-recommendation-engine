@@ -6,14 +6,16 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
+from app.data_bootstrap import ensure_data_available
 from app.schemas import ProductOut, RecommendationResponse
-from app.service import RecommenderService, build_recommender_service
+from app.service import DATA_DIR, RecommenderService, build_recommender_service
 
 APP_DIR = Path(__file__).parent
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    ensure_data_available(DATA_DIR)
     app.state.service = build_recommender_service()
     yield
 
