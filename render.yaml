@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: product-recommendation-engine
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: KAGGLE_API_TOKEN
+        sync: false # set manually in the Render dashboard, never committed

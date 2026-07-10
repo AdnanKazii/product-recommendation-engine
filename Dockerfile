@@ -10,8 +10,9 @@ COPY src/ src/
 COPY app/ app/
 
 ENV PYTHONUNBUFFERED=1
-
-# 7860 is Hugging Face Spaces' expected port for the Docker SDK
+# 7860 is a common convention (Hugging Face Spaces' expected Docker port);
+# hosts like Render override this at runtime via their own $PORT env var
+ENV PORT=7860
 EXPOSE 7860
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "7860"]
+CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT}"]
